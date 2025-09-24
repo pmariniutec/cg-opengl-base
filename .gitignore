@@ -1,0 +1,83 @@
+# Build directories
+build/
+bin/
+lib/
+out/
+
+# Visual Studio / MSBuild
+.vs/
+*.vcxproj.user
+*.vcxproj.filters
+*.sln.docstates
+*.suo
+*.user
+*.userosscache
+*.sln.docstates.json
+
+# CMake
+CMakeCache.txt
+CMakeFiles/
+cmake_install.cmake
+Makefile
+*.cmake
+!CMakeLists.txt
+!external/*/CMakeLists.txt
+!src/CMakeLists.txt
+
+# Compiled executables
+*.exe
+*.out
+*.app
+*.o
+*.obj
+*.so
+*.dylib
+*.dll
+*.lib
+*.a
+
+# Debug files
+*.pdb
+*.ilk
+*.idb
+*.dSYM/
+
+# IDE files
+.vscode/settings.json
+.vscode/launch.json
+.vscode/c_cpp_properties.json
+*.swp
+*.swo
+*~
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Logs
+*.log
+
+# Temporary files
+*.tmp
+*.temp
+*.bak
+*.backup
+
+# Package managers
+vcpkg_installed/
+conan/
+
+# Testing
+Testing/
+*.gcov
+*.gcda
+*.gcno
+
+# Documentation
+docs/html/
+docs/latex/

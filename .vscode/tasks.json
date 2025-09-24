@@ -1,0 +1,286 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "type": "shell",
+            "label": "CMake Configure",
+            "command": "cmake",
+            "args": [
+                "-S", ".",
+                "-B", "build"
+            ],
+            "group": "build",
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": false,
+                "panel": "shared"
+            },
+            "problemMatcher": ["$gcc"],
+            "windows": {
+                "args": [
+                    "-G", "Visual Studio 17 2022",
+                    "-A", "x64",
+                    "-S", ".",
+                    "-B", "build"
+                ]
+            },
+            "linux": {
+                "args": [
+                    "-G", "Unix Makefiles",
+                    "-DCMAKE_BUILD_TYPE=Debug",
+                    "-S", ".",
+                    "-B", "build"
+                ]
+            },
+            "osx": {
+                "args": [
+                    "-G", "Unix Makefiles", 
+                    "-DCMAKE_BUILD_TYPE=Debug",
+                    "-S", ".",
+                    "-B", "build"
+                ]
+            }
+        },
+        {
+            "type": "shell", 
+            "label": "CMake Build Debug",
+            "command": "cmake",
+            "args": [
+                "--build", "build",
+                "--config", "Debug"
+            ],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": false,
+                "panel": "shared"
+            },
+            "problemMatcher": ["$msCompile"],
+            "dependsOn": "CMake Configure"
+        },
+        {
+            "type": "shell",
+            "label": "CMake Build Release", 
+            "command": "cmake",
+            "args": [
+                "--build", "build",
+                "--config", "Release"
+            ],
+            "group": "build",
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": false,
+                "panel": "shared"
+            },
+            "problemMatcher": ["$msCompile"],
+            "dependsOn": "CMake Configure"
+        },
+        {
+            "type": "shell",
+            "label": "Create Shader Symlinks",
+            "command": "powershell",
+            "args": [
+                "-Command",
+                "if (!(Test-Path 'build\\bin\\Debug\\shaders')) { New-Item -ItemType SymbolicLink -Path 'build\\bin\\Debug\\shaders' -Target '..\\..\\..\\shaders' -Force }; if (!(Test-Path 'build\\bin\\Release\\shaders')) { New-Item -ItemType Directory -Path 'build\\bin\\Release' -Force; New-Item -ItemType SymbolicLink -Path 'build\\bin\\Release\\shaders' -Target '..\\..\\..\\shaders' -Force }"
+            ],
+            "group": "build",
+            "presentation": {
+                "echo": true,
+                "reveal": "silent",
+                "focus": false,
+                "panel": "shared"
+            }
+        },
+        {
+            "type": "shell",
+            "label": "Build and Create Symlinks",
+            "dependsOrder": "sequence",
+            "dependsOn": [
+                "CMake Build Debug",
+                "Create Shader Symlinks"
+            ],
+            "group": {
+                "kind": "build",
+                "isDefault": false
+            }
+        },
+        {
+            "type": "shell",
+            "label": "Run Application",
+            "command": ".\\OpenGLApp.exe",
+            "args": [],
+            "options": {
+                "cwd": "${workspaceFolder}/build/bin/Debug"
+            },
+            "group": "test",
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": true,
+                "panel": "new"
+            },
+            "dependsOn": "Build and Create Symlinks"
+        },
+        {
+            "type": "shell",
+            "label": "CMake Configure Cross-Platform",
+            "group": "build",
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": false,
+                "panel": "shared"
+            },
+            "windows": {
+                "command": "cmake",
+                "args": [
+                    "-G", "Visual Studio 17 2022",
+                    "-A", "x64",
+                    "-S", ".",
+                    "-B", "build",
+                    "-DCMAKE_EXPORT_COMPILE_COMMANDS=ON"
+                ],
+                "problemMatcher": ["$msCompile"]
+            },
+            "linux": {
+                "command": "cmake",
+                "args": [
+                    "-G", "Unix Makefiles",
+                    "-DCMAKE_BUILD_TYPE=Debug",
+                    "-S", ".",
+                    "-B", "build",
+                    "-DCMAKE_EXPORT_COMPILE_COMMANDS=ON"
+                ],
+                "problemMatcher": ["$gcc"]
+            },
+            "osx": {
+                "command": "cmake", 
+                "args": [
+                    "-G", "Unix Makefiles",
+                    "-DCMAKE_BUILD_TYPE=Debug",
+                    "-S", ".",
+                    "-B", "build",
+                    "-DCMAKE_EXPORT_COMPILE_COMMANDS=ON"
+                ],
+                "problemMatcher": ["$gcc"]
+            }
+        },
+        {
+            "type": "shell",
+            "label": "CMake Configure Release",
+            "group": "build", 
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": false,
+                "panel": "shared"
+            },
+            "windows": {
+                "command": "cmake",
+                "args": [
+                    "-G", "Visual Studio 17 2022",
+                    "-A", "x64",
+                    "-S", ".",
+                    "-B", "build",
+                    "-DCMAKE_EXPORT_COMPILE_COMMANDS=ON"
+                ]
+            },
+            "linux": {
+                "command": "cmake",
+                "args": [
+                    "-G", "Unix Makefiles", 
+                    "-DCMAKE_BUILD_TYPE=Release",
+                    "-S", ".",
+                    "-B", "build",
+                    "-DCMAKE_EXPORT_COMPILE_COMMANDS=ON"
+                ]
+            },
+            "osx": {
+                "command": "cmake",
+                "args": [
+                    "-G", "Unix Makefiles",
+                    "-DCMAKE_BUILD_TYPE=Release", 
+                    "-S", ".",
+                    "-B", "build",
+                    "-DCMAKE_EXPORT_COMPILE_COMMANDS=ON"
+                ]
+            }
+        },
+        {
+            "type": "shell",
+            "label": "CMake Build Cross-Platform Debug",
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": false,
+                "panel": "shared"
+            },
+            "dependsOn": "CMake Configure Cross-Platform",
+            "windows": {
+                "command": "cmake",
+                "args": [
+                    "--build", "build",
+                    "--config", "Debug",
+                    "--parallel"
+                ],
+                "problemMatcher": ["$msCompile"]
+            },
+            "linux": {
+                "command": "cmake",
+                "args": [
+                    "--build", "build",
+                    "--parallel"
+                ],
+                "problemMatcher": ["$gcc"]
+            },
+            "osx": {
+                "command": "cmake",
+                "args": [
+                    "--build", "build", 
+                    "--parallel"
+                ],
+                "problemMatcher": ["$gcc"]
+            }
+        },
+        {
+            "type": "shell",
+            "label": "Cross-Platform Run",
+            "group": "test",
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": true,
+                "panel": "new"
+            },
+            "dependsOn": "CMake Build Cross-Platform Debug",
+            "windows": {
+                "command": ".\\OpenGLApp.exe",
+                "options": {
+                    "cwd": "${workspaceFolder}/build/bin/Debug"
+                }
+            },
+            "linux": {
+                "command": "./OpenGLApp",
+                "options": {
+                    "cwd": "${workspaceFolder}/build/bin"
+                }
+            },
+            "osx": {
+                "command": "./OpenGLApp",
+                "options": {
+                    "cwd": "${workspaceFolder}/build/bin"
+                }
+            }
+        }
+    ]
+}

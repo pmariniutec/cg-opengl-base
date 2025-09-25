@@ -2,6 +2,11 @@
 
 A modern OpenGL 4.1 application written in C++20 with cross-platform support for Windows (MSVC), macOS (Clang), and Linux (GCC/Clang).
 
+## Cloning
+```bash
+git clone --recursive git@github.com:pmariniutec/cg-opengl-base.git
+```
+
 ## Project Structure
 
 ```
